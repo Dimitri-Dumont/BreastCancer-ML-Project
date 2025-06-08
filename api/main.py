@@ -55,11 +55,11 @@ async def upload_image(file: UploadFile = File(...)):
         # Read and validate image
         contents = await file.read()
         
-        if not validate_image(contents, settings.MAX_FILE_SIZE):
-            raise HTTPException(
-                status_code=400, 
-                detail=f"Invalid image or file too large (max {settings.MAX_FILE_SIZE // (1024*1024)}MB)"
-            )
+        # if not validate_image(contents, settings.MAX_FILE_SIZE):
+        #     raise HTTPException(
+        #         status_code=400, 
+        #         detail=f"Invalid image or file too large (max {settings.MAX_FILE_SIZE // (1024*1024)}MB)"
+        #     )
         
         # Open image
         image = Image.open(io.BytesIO(contents))

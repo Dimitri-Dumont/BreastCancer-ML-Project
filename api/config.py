@@ -21,7 +21,7 @@ class Settings:
     ]
     
     # File Upload Configuration
-    MAX_FILE_SIZE: int = config("MAX_FILE_SIZE", default=10 * 1024 * 1024, cast=int)  # 10MB
+    MAX_FILE_SIZE: int = config("MAX_FILE_SIZE", default=100 * 1024 * 1024, cast=int)  # 10MB
     ALLOWED_IMAGE_EXTENSIONS: List[str] = [".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".dcm"]
     UPLOAD_DIR: str = config("UPLOAD_DIR", default="uploads")
     

@@ -38,11 +38,12 @@
 }
 
 .read-the-docs {
-  color: #888;
+  color: #623939;
 }
 
 /* New styles for drag and drop upload */
 .upload-container {
+  color: black;
   max-width: 600px;
   margin: 2rem auto;
   padding: 1rem;
@@ -171,7 +172,7 @@
 }
 
 .images img {
-  border: 1px solid #ddd;
+  border: 1px solid #663e3e;
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }

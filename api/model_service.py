@@ -5,6 +5,8 @@ from PIL import Image
 from typing import Dict, List, Any, Tuple
 import asyncio
 from datetime import datetime
+import base64
+import io
 
 from config import settings
 
@@ -79,7 +81,7 @@ class BreastCancerModel:
             start_time = datetime.now()
             
             # Preprocess image
-            processed_image = preprocess_image(image, settings.TARGET_IMAGE_SIZE)
+            # processed_image = preprocess_image(image, settings.TARGET_IMAGE_SIZE)
             
             # TODO: Replace with actual model inference
             # prediction = self.model.predict(processed_image)
@@ -255,4 +257,36 @@ def draw_box(image: Image.Image, box: Dict[str, Any]) -> Image.Image:
             draw.rectangle([x1, y1 - 15, x1 + 50, y1], fill="red")
             draw.text((x1 + 2, y1 - 12), label, fill="white")
     
-    return img_copy 
+    return img_copy
+
+
+def image_to_base64(image: Image.Image, format: str = "JPEG") -> str:
+    """
+    Convert PIL Image to base64 encoded string
+    
+    Args:
+        image: PIL Image object
+        format: Image format (JPEG, PNG, etc.)
+    
+    Returns:
+        Base64 encoded string with data URI prefix
+    """
+    # Create a BytesIO buffer
+    buffer = io.BytesIO()
+    
+    # Convert image to RGB if it's not already (required for JPEG)
+    if format.upper() == "JPEG" and image.mode != "RGB":
+        image = image.convert("RGB")
+    
+    # Save image to buffer
+    image.save(buffer, format=format)
+    
+    # Get the bytes from buffer
+    image_bytes = buffer.getvalue()
+    
+    # Encode to base64
+    base64_string = base64.b64encode(image_bytes).decode('utf-8')
+    
+    # Return with data URI prefix
+    mime_type = f"image/{format.lower()}"
+    return f"data:{mime_type};base64,{base64_string}" 
