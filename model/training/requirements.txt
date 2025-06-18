@@ -1,0 +1,28 @@
+# Core Data Science Libraries
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Machine Learning Libraries
+scikit-learn>=1.3.0
+tensorflow>=2.13.0
+
+# Image Processing Libraries
+opencv-python>=4.8.0
+Pillow>=10.0.0
+
+# Medical Imaging Library
+pydicom>=2.4.0
+
+# Jupyter Notebook Environment
+jupyter>=1.0.0
+ipykernel>=6.0.0
+
+# Optional: For better performance and compatibility
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# For model deployment (optional)
+flask>=2.3.0
+
+# System utilities (usually pre-installed but good to specify)
+# os, datetime, pickle are built-in Python modules 
