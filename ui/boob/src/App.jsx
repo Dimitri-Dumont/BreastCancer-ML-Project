@@ -9,6 +9,13 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
+  
+  // Medical parameters state
+  const [breastDensity, setBreastDensity] = useState("3")
+  const [leftOrRightBreast, setLeftOrRightBreast] = useState('LEFT')
+  const [subtlety, setSubtlety] = useState("3")
+  const [massMargins, setMassMargins] = useState('SPICULATED')
+  const [forceMalignant, setForceMalignant] = useState(false)
 
   const handleDragOver = (e) => {
     e.preventDefault()
@@ -55,6 +62,11 @@ function App() {
 
     const formData = new FormData()
     formData.append('file', selectedFile)
+    formData.append('breast_density', parseInt(breastDensity))
+    formData.append('left_or_right_breast', leftOrRightBreast)
+    formData.append('subtlety', parseInt(subtlety))
+    formData.append('mass_margins', massMargins)
+    formData.append('force_malignant', forceMalignant)
 
     try {
       const response = await fetch('http://localhost:8000/upload-image', {
@@ -63,7 +75,8 @@ function App() {
       })
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        const errorData = await response.json()
+        throw new Error(errorData.detail || `HTTP error! status: ${response.status}`)
       }
 
       const data = await response.json()
@@ -113,6 +126,80 @@ function App() {
           </label>
         </div>
 
+        {/* Medical Parameters Form */}
+        <div className="parameters-form">
+          <h3>Medical Parameters</h3>
+          <div className="form-grid">
+            <div className="form-group">
+              <label htmlFor="breastDensity">Breast Density:</label>
+              <select 
+                id="breastDensity"
+                value={breastDensity || "3"} 
+                onChange={(e) => setBreastDensity(e.target.value)}
+              >
+                <option value="1">1 - Almost entirely fatty</option>
+                <option value="2">2 - Scattered fibroglandular</option>
+                <option value="3">3 - Heterogeneously dense</option>
+                <option value="4">4 - Extremely dense</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="leftOrRightBreast">Breast Side:</label>
+              <select 
+                id="leftOrRightBreast"
+                value={leftOrRightBreast || "LEFT"} 
+                onChange={(e) => setLeftOrRightBreast(e.target.value)}
+              >
+                <option value="LEFT">Left</option>
+                <option value="RIGHT">Right</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="subtlety">Subtlety Rating:</label>
+              <select 
+                id="subtlety"
+                value={subtlety || "3"} 
+                onChange={(e) => setSubtlety(e.target.value)}
+              >
+                <option value="1">1 - Subtle</option>
+                <option value="2">2 - Relatively subtle</option>
+                <option value="3">3 - Relatively obvious</option>
+                <option value="4">4 - Obvious</option>
+                <option value="5">5 - Very obvious</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="massMargins">Mass Margins:</label>
+              <select 
+                id="massMargins"
+                value={massMargins || "SPICULATED"} 
+                onChange={(e) => setMassMargins(e.target.value)}
+              >
+                <option value="CIRCUMSCRIBED">Circumscribed</option>
+                <option value="ILL_DEFINED">Ill-defined</option>
+                <option value="SPICULATED">Spiculated</option>
+                <option value="MICROLOBULATED">Microlobulated</option>
+                <option value="OBSCURED">Obscured</option>
+              </select>
+            </div>
+
+            <div className="form-group checkbox-group">
+              <label htmlFor="forceMalignant">
+                <input 
+                  type="checkbox"
+                  id="forceMalignant"
+                  checked={forceMalignant}
+                  onChange={(e) => setForceMalignant(e.target.checked)}
+                />
+                Force Malignant (Testing Mode)
+              </label>
+            </div>
+          </div>
+        </div>
+
         {selectedFile && (
           <div className="file-info">
             <p><strong>Selected:</strong> {selectedFile.name}</p>
@@ -137,19 +224,71 @@ function App() {
           <div className="results">
             <h3>Analysis Results</h3>
             <div className="result-content">
-              <p><strong>Prediction:</strong> {result.classification.predicted_class}</p>
-              <p><strong>Confidence:</strong> {(result.classification.confidence * 100).toFixed(1)}%</p>
-              
-              {result.processed_image && (
-                <div className="images">
-                  <h4>Processed Image with Detection:</h4>
+              <div className="classification-summary">
+                <div className={`classification-badge ${result.classification.predicted_class.toLowerCase()}`}>
+                  {result.classification.predicted_class}
+                </div>
+                <p><strong>Probability:</strong> {(result.classification.probability * 100).toFixed(1)}%</p>
+                <p><strong>Confidence:</strong> {(result.classification.confidence * 100).toFixed(1)}%</p>
+                <p><strong>Risk Level:</strong> {result.interpretation.risk_level}</p>
+                <p><strong>Recommendation:</strong> {result.interpretation.recommendation}</p>
+              </div>
+
+              <div className="detailed-results">
+                <h4>Detailed Classification:</h4>
+                <div className="probability-bars">
+                  <div className="probability-item">
+                    <span>Benign:</span>
+                    <div className="probability-bar">
+                      <div 
+                        className="probability-fill benign" 
+                        style={{ width: `${result.classification.classes.BENIGN * 100}%` }}
+                      ></div>
+                      <span className="probability-text">
+                        {(result.classification.classes.BENIGN * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                  </div>
+                  <div className="probability-item">
+                    <span>Malignant:</span>
+                    <div className="probability-bar">
+                      <div 
+                        className="probability-fill malignant" 
+                        style={{ width: `${result.classification.classes.MALIGNANT * 100}%` }}
+                      ></div>
+                      <span className="probability-text">
+                        {(result.classification.classes.MALIGNANT * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="input-parameters">
+                <h4>Input Parameters:</h4>
+                <div className="parameters-display">
+                  <p><strong>Breast Density:</strong> {result.input_parameters.breast_density}</p>
+                  <p><strong>Breast Side:</strong> {result.input_parameters.left_or_right_breast}</p>
+                  <p><strong>Subtlety:</strong> {result.input_parameters.subtlety}</p>
+                  <p><strong>Mass Margins:</strong> {result.input_parameters.mass_margins}</p>
+                </div>
+              </div>
+
+              {result.result_image && (
+                <div className="result-visualization">
+                  <h4>Analysis Visualization:</h4>
                   <img 
-                    src={`data:image/jpeg;base64,${result.processed_image}`} 
-                    alt="Processed MRI" 
-                    style={{ maxWidth: '400px', height: 'auto' }}
+                    src={result.result_image} 
+                    alt="Analysis Results Visualization" 
+                    className="result-image"
                   />
                 </div>
               )}
+
+              <div className="metadata">
+                <p><strong>Analysis Time:</strong> {new Date(result.metadata.timestamp).toLocaleString()}</p>
+                <p><strong>Model Version:</strong> {result.metadata.model_version}</p>
+              </div>
             </div>
           </div>
         )}
