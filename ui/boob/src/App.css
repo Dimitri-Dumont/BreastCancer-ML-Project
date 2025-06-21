@@ -44,7 +44,7 @@
 /* New styles for drag and drop upload */
 .upload-container {
   color: black;
-  max-width: 600px;
+  max-width: 800px;
   margin: 2rem auto;
   padding: 1rem;
 }
@@ -84,6 +84,79 @@
 
 .file-select-button:hover {
   background-color: #535bf2;
+}
+
+/* Medical Parameters Form Styles */
+.parameters-form {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+}
+
+.parameters-form h3 {
+  margin-top: 0;
+  color: #495057;
+  text-align: center;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.form-group select {
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: white;
+  color: #495057;
+  font-size: 1rem;
+  font-family: inherit;
+  line-height: 1.5;
+  appearance: auto;
+  -webkit-appearance: menulist;
+  -moz-appearance: menulist;
+  min-height: 38px;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.form-group select:focus {
+  outline: none;
+  border-color: #646cff;
+  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.25);
+}
+
+.form-group select option {
+  padding: 0.5rem;
+  background-color: white;
+  color: #495057;
+  font-size: 1rem;
+}
+
+.checkbox-group {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+  margin-right: 0.5rem;
 }
 
 .file-info {
@@ -143,36 +216,221 @@
 
 .results {
   margin: 2rem 0;
-  padding: 1rem;
-  background-color: #e8f5e8;
-  border: 1px solid #4CAF50;
-  border-radius: 4px;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
   text-align: left;
 }
 
 .results h3 {
   margin-top: 0;
-  color: #2e7d32;
+  color: #495057;
   text-align: center;
+  font-size: 1.5rem;
 }
 
-.result-content p {
+.result-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Classification Summary Styles */
+.classification-summary {
+  text-align: center;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.classification-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.classification-badge.benign {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.classification-badge.malignant {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.classification-summary p {
   margin: 0.5rem 0;
   font-size: 1.1rem;
 }
 
-.images {
-  margin-top: 1rem;
+/* Detailed Results Styles */
+.detailed-results {
+  padding: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.detailed-results h4 {
+  margin-top: 0;
+  color: #495057;
+}
+
+.probability-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.probability-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.probability-item span:first-child {
+  min-width: 80px;
+  font-weight: 600;
+}
+
+.probability-bar {
+  flex: 1;
+  height: 25px;
+  background-color: #e9ecef;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.probability-fill {
+  height: 100%;
+  border-radius: 12px;
+  transition: width 0.5s ease;
+}
+
+.probability-fill.benign {
+  background-color: #28a745;
+}
+
+.probability-fill.malignant {
+  background-color: #dc3545;
+}
+
+.probability-text {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+/* Input Parameters Styles */
+.input-parameters {
+  padding: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.input-parameters h4 {
+  margin-top: 0;
+  color: #495057;
+}
+
+.parameters-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.5rem;
+}
+
+.parameters-display p {
+  margin: 0.25rem 0;
+  font-size: 1rem;
+}
+
+/* Result Visualization Styles */
+.result-visualization {
   text-align: center;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.images h4 {
-  margin-bottom: 1rem;
-  color: #2e7d32;
+.result-visualization h4 {
+  margin-top: 0;
+  color: #495057;
 }
 
-.images img {
-  border: 1px solid #663e3e;
-  border-radius: 4px;
+.result-image {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Metadata Styles */
+.metadata {
+  padding: 1rem;
+  background-color: #e9ecef;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.metadata p {
+  margin: 0.25rem 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .upload-container {
+    max-width: 95%;
+    padding: 0.5rem;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .probability-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  
+  .probability-item span:first-child {
+    min-width: auto;
+  }
+  
+  .parameters-display {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Loading Animation */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.button-group button:disabled {
+  animation: pulse 1.5s ease-in-out infinite;
 }
